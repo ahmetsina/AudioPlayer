@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.authors       = { 'Kevin Delannoy' => 'delannoyk@gmail.com' }
   s.summary       = 'AudioPlayer is a wrapper around AVPlayer and also offers cool features.'
 
-  s.source        =  { :git => 'https://github.com/delannoyk/AudioPlayer.git', :tag => s.version.to_s }
+  s.source        =  { :git => 'https://github.com/ahmetsina/AudioPlayer', :tag => s.version.to_s }
   s.source_files  = 'AudioPlayer/AudioPlayer/**/*.swift'
   s.requires_arc  = true
 
