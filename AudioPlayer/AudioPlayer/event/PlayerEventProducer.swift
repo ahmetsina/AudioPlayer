@@ -135,7 +135,7 @@ class PlayerEventProducer: NSObject, EventProducer {
             player.addObserver(self, forKeyPath: keyPath, options: .new, context: nil)
         }
 
-         //Observing timing event
+        //Observing timing event
         timeObserver = player.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 2), queue: .main) { [weak self] time in
             if let `self` = self {
                 self.eventListener?.onEvent(PlayerEvent.progressed(time: time), generetedBy: self)
@@ -154,10 +154,10 @@ class PlayerEventProducer: NSObject, EventProducer {
         //Unobserving notifications sent through `NSNotificationCenter`
         let center = NotificationCenter.default
         #if os(iOS) || os(tvOS)
-            center.removeObserver(self, name: AVAudioSession.interruptionNotification, object: nil)
-            center.removeObserver(self, name: AVAudioSession.routeChangeNotification, object: nil)
-            center.removeObserver(self, name: AVAudioSession.mediaServicesWereLostNotification, object: nil)
-            center.removeObserver(self, name: AVAudioSession.mediaServicesWereResetNotification, object: nil)
+        center.removeObserver(self, name: AVAudioSession.interruptionNotification, object: nil)
+        center.removeObserver(self, name: AVAudioSession.routeChangeNotification, object: nil)
+        center.removeObserver(self, name: AVAudioSession.mediaServicesWereLostNotification, object: nil)
+        center.removeObserver(self, name: AVAudioSession.mediaServicesWereResetNotification, object: nil)
         #endif
         center.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: player.currentItem)
 
