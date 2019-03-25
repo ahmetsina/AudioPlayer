@@ -359,10 +359,19 @@ public class AudioPlayer: NSObject {
     ///
     /// - Parameter active: A boolean value indicating whether the audio session should be set to active or not.
     func setAudioSession(active: Bool) {
+
         #if os(iOS) || os(tvOS)
-            _ = try? AVAudioSession.sharedInstance().setCategory(convertFromAVAudioSessionCategory(AVAudioSession.Category.playback))
+        if #available(iOS 10.0, *) {
+            _ = try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
             _ = try? AVAudioSession.sharedInstance().setActive(active)
+        } else {
+            // Fallback on earlier versions
+            // Workaround until https://forums.swift.org/t/using-methods-marked-unavailable-in-swift-4-2/14949
+            // isn’t fixed
+            AVAudioSession.sharedInstance().perform(NSSelectorFromString("setCategory:error:"), with: AVAudioSession.Category.playback)
+        }
         #endif
+
     }
 
     // MARK: Public computed properties
@@ -410,10 +419,6 @@ public class AudioPlayer: NSObject {
             playerItem.preferredForwardBufferDuration = self.preferredForwardBufferDuration
         }
     }
-    // Helper function inserted by Swift 4.2 migrator.
-    func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
-	    return input.rawValue
-    }
 }
 
 extension AudioPlayer: EventListener {
@@ -438,5 +443,4 @@ extension AudioPlayer: EventListener {
             handleSeekEvent(from: eventProducer, with: event)
         }
     }
-    
 }
